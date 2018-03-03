@@ -1,12 +1,37 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
+//import {CSSTransitionGroup} from 'react-transition-group'
+
+//import Transition from 'react-transition-group/Transition';
+
+
+import 'typeface-roboto'
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import IconButton from 'material-ui/IconButton';
+//import CloseIcon from 'material-ui-icons/Close';
+
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import NameGenerator from './components/NameGenerator';
+
+import './App.css';
+
+
 import TextLink from './components/TextLink';
 import OutputBox from "./components/OutputBox";
 import Form from './components/Form';
 
+
+// see: https://stackoverflow.com/questions/33650399/es6-modules-implementation-how-to-load-a-json-file
+// use loader: 'json-loader' instead
+
+// https://reactcommunity.org/react-transition-group/
+
+// https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
+// http://blog.creative-tim.com/web-design/bootstrap-glyphicons/
 
 class App extends Component {
 
@@ -31,6 +56,7 @@ class App extends Component {
 
     };
 
+
     copyMessage(text, result) {
         console.log(`msg: ${text}, result: ${result}`);
         this.setState({copied: result, lastItemCopied: text});
@@ -44,6 +70,7 @@ class App extends Component {
 
         this.setState({copied: false});
     };
+
 
     handleStartGenerating(form_word1, form_word2) {
         this.setState(() => {
@@ -59,7 +86,7 @@ class App extends Component {
         let nameGenerate = new NameGenerator(form_word1, form_word2);
         let namesList = nameGenerate.getName();
 
-        namesList = [namesList, namesList];
+        //namesList = [namesList, namesList];
 
         this.setState({names: namesList});
 
@@ -74,20 +101,51 @@ class App extends Component {
         const namesList = this.state.names;
 
         return (
-            <div className="App">
-                <Form startGeneratingNames={this.handleStartGenerating}/>
 
-                <OutputBox title="My Title">
-                    {namesList.map((name, index) => {
-                            return (
-                                <TextLink label={name} key={index.toString()} copyMessage={this.copyMessage}/> )
-                        }
-                    )}
-                </OutputBox>
 
-            </div>
+                <div className="App">
+                    <form className="form-signin">
+                    <div className="text-center mb-4">
+                        <img className="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
+                            <h1 className="h3 mb-3 font-weight-normal">Floating labels</h1>
+                            <p>Intro goes here...</p>
+                    </div>
+
+
+                            <Form startGeneratingNames={this.handleStartGenerating}/>
+
+                            <div>
+
+                                <OutputBox title="My Title">
+                                    {namesList.map((name, index) => {
+                                            return (
+                                                <TextLink label={name} key={index.toString()}
+                                                          copyMessage={this.copyMessage}/> )
+                                        }
+                                    )}
+                                </OutputBox>
+
+                            </div>
+
+
+                    </form>
+
+                    <Snackbar
+                        open={this.state.copied}
+                        message={this.state.lastItemCopied + ' Copied To Clipboard'}
+                        autoHideDuration={800}
+                        onClose={this.handleClose}
+                    />
+
+                </div>
+
         );
     }
 }
 
 export default App;
+
+/*
+ {this.state.copied ? <span key="msg">{this.state.lastItemCopied} Copied.</span> : null}
+
+ */
