@@ -1,29 +1,27 @@
 import React, {Component} from 'react';
+import FadeIn from 'react-fade-in';
 //import {CSSTransitionGroup} from 'react-transition-group'
 
 //import Transition from 'react-transition-group/Transition';
 
 
 import 'typeface-roboto'
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+//import PropTypes from 'prop-types';
+//import { withStyles } from 'material-ui/styles';
+//import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
-import IconButton from 'material-ui/IconButton';
+//import IconButton from 'material-ui/IconButton';
 //import CloseIcon from 'material-ui-icons/Close';
-
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import NameGenerator from './components/NameGenerator';
-
-import './App.css';
-
 
 import TextLink from './components/TextLink';
 import OutputBox from "./components/OutputBox";
 import Form from './components/Form';
 
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import 'font-awesome/css/font-awesome.min.css';
 
 // see: https://stackoverflow.com/questions/33650399/es6-modules-implementation-how-to-load-a-json-file
 // use loader: 'json-loader' instead
@@ -72,7 +70,10 @@ class App extends Component {
     };
 
 
+    // Call name generator
     handleStartGenerating(form_word1, form_word2) {
+
+        let namesList = [];
         this.setState(() => {
             return ({generatingNames: true});
         });
@@ -84,9 +85,8 @@ class App extends Component {
         });
 
         let nameGenerate = new NameGenerator(form_word1, form_word2);
-        let namesList = nameGenerate.getName();
 
-        //namesList = [namesList, namesList];
+        namesList = nameGenerate.getName(10);
 
         this.setState({names: namesList});
 
@@ -106,21 +106,28 @@ class App extends Component {
                 <div className="App">
                     <form className="form-signin">
                     <div className="text-center mb-4">
-                        <img className="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
-                            <h1 className="h3 mb-3 font-weight-normal">Floating labels</h1>
-                            <p>Intro goes here...</p>
+                        { /* <img className="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" /> */}
+                            <h1 className="h3 mb-3 font-weight-normal">Name Generator</h1>
+                        <FadeIn>
+                            <p>Enter One or Two Words and Press Generate....</p>
+                        </FadeIn>
                     </div>
 
 
                             <Form startGeneratingNames={this.handleStartGenerating}/>
 
+                        {this.state.generatingNames}
                             <div>
 
                                 <OutputBox title="My Title">
                                     {namesList.map((name, index) => {
                                             return (
+                                                <FadeIn>
                                                 <TextLink label={name} key={index.toString()}
-                                                          copyMessage={this.copyMessage}/> )
+                                                          copyMessage={this.copyMessage}/>
+                                                </FadeIn>
+                                            )
+
                                         }
                                     )}
                                 </OutputBox>
@@ -133,7 +140,7 @@ class App extends Component {
                     <Snackbar
                         open={this.state.copied}
                         message={this.state.lastItemCopied + ' Copied To Clipboard'}
-                        autoHideDuration={800}
+                        autoHideDuration={8000}
                         onClose={this.handleClose}
                     />
 

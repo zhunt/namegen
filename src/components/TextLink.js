@@ -17,7 +17,7 @@ class TextLink extends React.PureComponent {
         return (
 
             <div>
-                <CopyToClipboard text={name} onCopy={this.props.copyMessage} ><b>{name} <i className="material-icons hoverState">content_copy</i></b></CopyToClipboard>
+                <CopyToClipboard text={name} onCopy={this.props.copyMessage} ><b>{name} <i className="fa fa-caret-left"></i></b></CopyToClipboard>
             </div>
 
         )
